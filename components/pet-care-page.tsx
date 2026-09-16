@@ -125,7 +125,7 @@ export function PetCarePage() {
     const formData = new FormData(event.currentTarget);
     const service = services[pet][selectedService];
     setResult(
-      `已生成意向：${formData.get("petName")}，${formData.get("date")}，${service.name}。此为演示，尚未预约成功，也未发送任何信息。`,
+      `已生成意向：联系人 ${formData.get("contactName")}，手机号 ${formData.get("phone")}，宠物 ${formData.get("petName")}，${formData.get("date")}，${service.name}。此为演示，尚未预约成功，也未发送任何信息。`,
     );
   };
 
@@ -328,6 +328,32 @@ export function PetCarePage() {
               ))}
             </select>
           </label>
+          <div className="form-row">
+            <label className="field">
+              联系人
+              <input
+                name="contactName"
+                autoComplete="name"
+                placeholder="怎么称呼您？"
+                maxLength={30}
+                required
+              />
+            </label>
+            <label className="field">
+              手机号
+              <input
+                name="phone"
+                type="tel"
+                inputMode="numeric"
+                autoComplete="tel"
+                placeholder="请输入 11 位手机号"
+                pattern="1[3-9][0-9]{9}"
+                title="请输入正确的 11 位手机号"
+                maxLength={11}
+                required
+              />
+            </label>
+          </div>
           <div className="form-row">
             <label className="field">
               宠物昵称
