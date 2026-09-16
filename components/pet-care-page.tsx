@@ -415,15 +415,61 @@ export function PetCarePage() {
           </div>
         </section>
 
-        <section className="wrap visit" id="visit">
-          <div>
-            <div className="kicker">A LITTLE PLACE, A LOT OF LOVE</div>
-            <h2>留一点时间，给毛孩子。</h2>
-            <p>毛里时光 · 宠物洗护生活馆<br />门店地址与营业时间即将更新，期待和你见面。</p>
+        <section className="wrap visit-section" id="visit">
+          <div className="visit-heading">
+            <div>
+              <div className="kicker">VISIT PAWDAY</div>
+              <h2>来店里，见一面。</h2>
+            </div>
+            <p>预约到店，让毛孩子少一点等待，多一点安心。</p>
           </div>
-          <button className="button" type="button" onClick={() => openBooking()}>
-            安排一次洗护 <span aria-hidden="true">↗</span>
-          </button>
+
+          <div className="store-info" aria-label="门店信息">
+            <div className="store-name">
+              <span className="store-mark" aria-hidden="true">P.</span>
+              <div>
+                <span className="info-label">门店</span>
+                <strong>毛里时光 · 宠物洗护生活馆</strong>
+                <p>犬猫分区护理 · 一宠一清洁</p>
+              </div>
+            </div>
+            <div className="info-item">
+              <span className="info-icon" aria-hidden="true">⌖</span>
+              <div>
+                <span className="info-label">门店地址</span>
+                <strong>详细地址即将更新</strong>
+                <p>正式到店前请先完成预约确认</p>
+              </div>
+            </div>
+            <div className="info-item">
+              <span className="info-icon" aria-hidden="true">◷</span>
+              <div>
+                <span className="info-label">营业时间</span>
+                <strong>营业时间即将更新</strong>
+                <p>预约成功后将确认到店时段</p>
+              </div>
+            </div>
+            <button className="button store-booking" type="button" onClick={() => openBooking()}>
+              预约到店 <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+
+          <div className="map-panel">
+            <div className="map-bar">
+              <div>
+                <span className="info-label">门店地图</span>
+                <strong>地图位置将在地址确认后更新</strong>
+              </div>
+              <span className="map-status">位置待更新</span>
+            </div>
+            <iframe
+              className="store-map"
+              title="毛里时光门店位置地图"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=121.421%2C31.205%2C121.501%2C31.245&amp;layer=mapnik"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </section>
       </main>
 
