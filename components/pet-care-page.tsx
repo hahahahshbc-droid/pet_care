@@ -224,7 +224,7 @@ export function PetCarePage() {
           </div>
         </div>
 
-        <section className="wrap" id="services">
+        <section className="wrap services-section" id="services">
           <div className="section-head">
             <div>
               <div className="kicker">OUR SERVICES</div>
@@ -239,11 +239,17 @@ export function PetCarePage() {
             {services[pet].map((service, index) => (
               <article className={`card${index === 1 ? " featured" : ""}`} key={service.name}>
                 {index === 1 && <span className="popular">细致护理之选</span>}
-                <div className="service-icon" aria-hidden="true">{service.icon}</div>
-                <h3>{service.name}</h3>
-                <p className="desc">{service.description}</p>
-                <div className="price"><span className="currency">¥</span>{service.price}<small>起 / 次</small></div>
-                <div className="duration">{service.duration}</div>
+                <div className="card-heading">
+                  <div className="service-icon" aria-hidden="true">{service.icon}</div>
+                  <div>
+                    <h3>{service.name}</h3>
+                    <p className="desc">{service.description}</p>
+                  </div>
+                </div>
+                <div className="card-pricing">
+                  <div className="price"><span className="currency">¥</span>{service.price}<small>起 / 次</small></div>
+                  <div className="duration">{service.duration}</div>
+                </div>
                 <ul>
                   {service.features.map((feature) => <li key={feature}>{feature}</li>)}
                 </ul>
