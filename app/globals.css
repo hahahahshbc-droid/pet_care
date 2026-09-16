@@ -150,6 +150,7 @@ dialog::backdrop{background:#18231999;backdrop-filter:blur(4px)}
 .field input,.field select{width:100%;padding:11px;border:1px solid #cccfc1;border-radius:6px;background:white;min-width:0}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-result{margin-top:14px;font-size:14px;color:var(--green)}
+.button:disabled{cursor:wait;opacity:.65;transform:none}
 .menu-toggle{display:none}
 
 @media(min-width:1500px){.hero{padding-top:80px;padding-bottom:75px}.hero-visual{height:510px}}

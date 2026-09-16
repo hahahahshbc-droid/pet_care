@@ -2,17 +2,9 @@
 
 import Image from "next/image";
 import { FormEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { PetType, services } from "@/lib/services";
 
-export type PetType = "dog" | "cat";
-
-export type Service = {
-  name: string;
-  description: string;
-  price: number;
-  duration: string;
-  icon: string;
-  features: string[];
-};
+const bookingEndpoint = "https://ncendhzuuxqvhwwjdvcv.functions.supabase.co/create-booking";
 
 type Review = {
   name: string;
@@ -33,61 +25,6 @@ const reviews: Review[] = [
   { name: "孟女士", pet: "栗子 · 博美", service: "精致造型护", quote: "从咨询到接宠都很顺畅，造型保留了栗子原本的可爱感。眼周、脚边这些小地方也收拾得很利落，下次还会来。", date: "2026.05" },
 ];
 
-const services: Record<PetType, Service[]> = {
-  dog: [
-    {
-      name: "清爽基础浴",
-      description: "干干净净，是快乐的第一步。",
-      price: 79,
-      duration: "约 60–90 分钟",
-      icon: "♧",
-      features: ["温和清洁 · 护毛调理", "耳部清洁 · 修剪指甲", "脚底毛整理 · 吹干梳顺"],
-    },
-    {
-      name: "精致造型护",
-      description: "让每一个小可爱，都有自己的风格。",
-      price: 159,
-      duration: "约 90–150 分钟",
-      icon: "✂",
-      features: ["包含清爽基础浴全部项目", "全身毛发修剪 · 专属造型", "面部精修 · 细节整理"],
-    },
-    {
-      name: "柔润深层护",
-      description: "给毛发加一点柔软，给拥抱加分。",
-      price: 199,
-      duration: "约 90–120 分钟",
-      icon: "✧",
-      features: ["包含清爽基础浴全部项目", "深层护毛 · 柔顺护理", "浮毛梳理 · 毛发养护建议"],
-    },
-  ],
-  cat: [
-    {
-      name: "喵喵清爽浴",
-      description: "给爱干净的小猫，细致的清洁。",
-      price: 129,
-      duration: "约 60–90 分钟",
-      icon: "♧",
-      features: ["猫咪专用洗护 · 温水清洁", "耳部清洁 · 修剪指甲", "轻柔吹干 · 毛发梳顺"],
-    },
-    {
-      name: "蓬松去浮毛",
-      description: "梳掉多余浮毛，轻盈自在。",
-      price: 189,
-      duration: "约 90–120 分钟",
-      icon: "✂",
-      features: ["包含喵喵清爽浴全部项目", "分层梳理 · 浮毛护理", "局部毛发整理 · 护理建议"],
-    },
-    {
-      name: "长毛柔润护",
-      description: "照顾每一缕长毛，柔软好摸。",
-      price: 229,
-      duration: "约 90–150 分钟",
-      icon: "✧",
-      features: ["包含喵喵清爽浴全部项目", "长毛柔顺护理 · 深层护毛", "细致梳理 · 日常养护建议"],
-    },
-  ],
-};
-
 function localDateString() {
   const now = new Date();
   return new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
@@ -100,6 +37,7 @@ export function PetCarePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(0);
   const [result, setResult] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [minDate, setMinDate] = useState("");
   const [year, setYear] = useState<number | null>(null);
   const [reviewPage, setReviewPage] = useState(0);
@@ -173,13 +111,40 @@ export function PetCarePage() {
     if (outside) dialog.close();
   };
 
-  const submitBooking = (event: FormEvent<HTMLFormElement>) => {
+  const submitBooking = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const service = services[pet][selectedService];
-    setResult(
-      `已生成意向：联系人 ${formData.get("contactName")}，手机号 ${formData.get("phone")}，宠物 ${formData.get("petName")}，${formData.get("date")}，${service.name}。此为演示，尚未预约成功，也未发送任何信息。`,
-    );
+    setSubmitting(true);
+    setResult("");
+
+    try {
+      const response = await fetch(bookingEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contactName: formData.get("contactName"),
+          phone: formData.get("phone"),
+          petName: formData.get("petName"),
+          preferredDate: formData.get("date"),
+          petType: pet,
+          serviceIndex: selectedService,
+        }),
+      });
+      const data = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        throw new Error(data.error || "预约提交失败");
+      }
+
+      setResult(`预约已提交：${formData.get("date")}，${service.name}。门店会通过手机号与您确认。`);
+      form.reset();
+    } catch (error) {
+      setResult(error instanceof Error ? error.message : "预约提交失败，请稍后重试");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -484,7 +449,7 @@ export function PetCarePage() {
       <dialog ref={dialogRef} aria-labelledby="bookingTitle" onClick={closeFromBackdrop}>
         <button className="close" type="button" aria-label="关闭预约窗口" onClick={() => dialogRef.current?.close()}>×</button>
         <h2 className="dialog-title" id="bookingTitle">预约一段毛里时光</h2>
-        <p className="form-note">这是预约演示，信息不会发送至门店。正式预约功能需接入门店联系方式。</p>
+        <p className="form-note">提交后，门店会通过您填写的手机号确认预约时间。</p>
         <form onSubmit={submitBooking}>
           <label className="field">
             洗护项目
@@ -532,7 +497,9 @@ export function PetCarePage() {
               <input name="date" type="date" min={minDate} required />
             </label>
           </div>
-          <button type="submit" className="button full-width">生成预约意向</button>
+          <button type="submit" className="button full-width" disabled={submitting}>
+            {submitting ? "正在提交…" : "提交预约"}
+          </button>
           <p className="form-result" role="status" aria-live="polite">{result}</p>
         </form>
       </dialog>
