@@ -1,6 +1,45 @@
+# Dependencies
 node_modules/
+.pnp
+.pnp.*
+
+# Next.js / production output
 .next/
 out/
 dist/
+build/
+
+# Local hosting/runtime caches
 .sites-runtime/
+.vercel/
+
+# Tests and coverage
+coverage/
+
+# Environment files (keep shareable templates)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# OS and editor metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local archives
 *.tar.gz
