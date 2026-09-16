@@ -1,3 +1,6 @@
-pet-photo.jpg
-*.tar.gz
+node_modules/
+.next/
+out/
+dist/
 .sites-runtime/
+*.tar.gz
