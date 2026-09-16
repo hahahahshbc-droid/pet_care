@@ -262,24 +262,28 @@ export function PetCarePage() {
 
         <section className="wrap care-section" id="care">
           <div className="care-panel">
-            <div>
-              <div className="kicker">CARE IN EVERY LITTLE DETAIL</div>
-              <h2>慢一点，轻一点。<br />让洗澡也成为好时光。</h2>
-              <p>先熟悉，再亲近。我们重视毛孩子的感受，<br />从见面的第一刻，到回家的最后一梳。</p>
+            <div className="care-copy">
+              <div>
+                <div className="kicker">CARE IN EVERY LITTLE DETAIL</div>
+                <h2>慢一点，轻一点。<br />让洗澡也成为好时光。</h2>
+              </div>
+              <p className="care-note">
+                先熟悉，再亲近。我们重视毛孩子的感受，从见面的第一刻，到回家的最后一梳。
+              </p>
             </div>
-            <div className="steps">
+            <ol className="steps">
               {[
                 ["01", "见面，先交个朋友", "了解性格、毛发状态与护理习惯。"],
                 ["02", "温水，洗去小烦恼", "适宜水温，仔细清洁每一处毛发。"],
                 ["03", "轻柔，吹出蓬松感", "关注情绪变化，适时休息与安抚。"],
                 ["04", "检查，漂亮地回家", "整理毛发，分享日常护理建议。"],
               ].map(([number, title, text]) => (
-                <div className="step" key={number}>
+                <li className="step" key={number}>
                   <span className="step-number">{number}</span>
                   <div><h3>{title}</h3><p>{text}</p></div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
