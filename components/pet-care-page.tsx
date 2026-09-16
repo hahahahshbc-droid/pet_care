@@ -315,16 +315,16 @@ export function PetCarePage() {
               <span className="info-icon" aria-hidden="true">⌖</span>
               <div>
                 <span className="info-label">门店地址</span>
-                <strong>详细地址即将更新</strong>
-                <p>正式到店前请先完成预约确认</p>
+                <strong>上海市静安区愚园路 168 号</strong>
+                <p>到店前请先完成预约确认</p>
               </div>
             </div>
             <div className="info-item">
               <span className="info-icon" aria-hidden="true">◷</span>
               <div>
                 <span className="info-label">营业时间</span>
-                <strong>营业时间即将更新</strong>
-                <p>预约成功后将确认到店时段</p>
+                <strong>每日 10:00–20:00</strong>
+                <p>预约成功后将确认具体到店时段</p>
               </div>
             </div>
             <button className="button store-booking" type="button" onClick={() => openBooking()}>
@@ -336,14 +336,14 @@ export function PetCarePage() {
             <div className="map-bar">
               <div>
                 <span className="info-label">门店地图</span>
-                <strong>地图位置将在地址确认后更新</strong>
+                <strong>上海市静安区愚园路 168 号</strong>
               </div>
-              <span className="map-status">位置待更新</span>
+              <span className="map-status">每日 10:00–20:00</span>
             </div>
             <iframe
               className="store-map"
               title="毛里时光门店位置地图"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=121.421%2C31.205%2C121.501%2C31.245&amp;layer=mapnik"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=121.429%2C31.214%2C121.477%2C31.236&amp;layer=mapnik&amp;marker=31.225%2C121.453"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
