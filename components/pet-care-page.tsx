@@ -14,6 +14,25 @@ export type Service = {
   features: string[];
 };
 
+type Review = {
+  name: string;
+  pet: string;
+  service: string;
+  quote: string;
+  date: string;
+};
+
+const reviews: Review[] = [
+  { name: "林女士", pet: "豆包 · 比熊", service: "精致造型护", quote: "豆包以前一到洗澡就紧张，这次美容师先陪它熟悉环境，结束后还开心地在店里转圈。脸型修得很自然，回家抱起来又软又香。", date: "2026.08" },
+  { name: "周先生", pet: "年糕 · 英短", service: "蓬松去浮毛", quote: "会提前说明猫咪当天的状态和护理步骤，整个过程很耐心。年糕回家后情绪稳定，浮毛也少了很多，细节让人很放心。", date: "2026.08" },
+  { name: "唐女士", pet: "可乐 · 柯基", service: "清爽基础浴", quote: "脚底毛和指甲都处理得很细致，耳朵也清洁得很干净。护理结束后收到了一份日常梳毛建议，对新手家长特别实用。", date: "2026.07" },
+  { name: "陈先生", pet: "芝麻 · 雪纳瑞", service: "精致造型护", quote: "会先沟通想保留的长度，再根据芝麻的脸型调整。成品清爽又精神，没有剪得千篇一律，家里人都很喜欢。", date: "2026.07" },
+  { name: "许女士", pet: "汤圆 · 布偶", service: "长毛柔润护", quote: "汤圆肚子上的小结都被慢慢梳开了，没有直接剪掉。毛发护理后顺滑很多，工作人员也仔细讲了在家怎么避免打结。", date: "2026.06" },
+  { name: "吴先生", pet: "麦麦 · 金毛", service: "柔润深层护", quote: "大型犬洗护很考验耐心，麦麦全程被照顾得很好。吹干很彻底，毛发蓬松却不毛躁，接它时状态特别放松。", date: "2026.06" },
+  { name: "赵女士", pet: "奶盖 · 美短", service: "喵喵清爽浴", quote: "猫咪洗护区安静整洁，预约到店后没有等待。美容师会观察奶盖的反应及时休息，整个流程让家长也很安心。", date: "2026.05" },
+  { name: "孟女士", pet: "栗子 · 博美", service: "精致造型护", quote: "从咨询到接宠都很顺畅，造型保留了栗子原本的可爱感。眼周、脚边这些小地方也收拾得很利落，下次还会来。", date: "2026.05" },
+];
+
 const services: Record<PetType, Service[]> = {
   dog: [
     {
@@ -83,12 +102,46 @@ export function PetCarePage() {
   const [result, setResult] = useState("");
   const [minDate, setMinDate] = useState("");
   const [year, setYear] = useState<number | null>(null);
+  const [reviewPage, setReviewPage] = useState(0);
+  const [reviewsPerPage, setReviewsPerPage] = useState(3);
+  const [reviewsPaused, setReviewsPaused] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     setMinDate(localDateString());
     setYear(new Date().getFullYear());
   }, []);
+
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 720px)");
+    const tablet = window.matchMedia("(max-width: 1000px)");
+    const updateReviewsPerPage = () => {
+      setReviewsPerPage(mobile.matches ? 1 : tablet.matches ? 2 : 3);
+      setReviewPage(0);
+    };
+
+    updateReviewsPerPage();
+    mobile.addEventListener("change", updateReviewsPerPage);
+    tablet.addEventListener("change", updateReviewsPerPage);
+    return () => {
+      mobile.removeEventListener("change", updateReviewsPerPage);
+      tablet.removeEventListener("change", updateReviewsPerPage);
+    };
+  }, []);
+
+  const reviewPageCount = Math.ceil(reviews.length / reviewsPerPage);
+
+  useEffect(() => {
+    if (reviewsPaused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => {
+      setReviewPage((page) => (page + 1) % reviewPageCount);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [reviewPageCount, reviewsPaused]);
+
+  const moveReviews = (direction: -1 | 1) => {
+    setReviewPage((page) => (page + direction + reviewPageCount) % reviewPageCount);
+  };
 
   const choosePet = (nextPet: PetType) => {
     setPet(nextPet);
@@ -147,6 +200,7 @@ export function PetCarePage() {
           >
             <a href="#services" onClick={closeMenu}>洗护服务</a>
             <a href="#care" onClick={closeMenu}>安心护理</a>
+            <a href="#reviews" onClick={closeMenu}>客户评价</a>
             <a href="#visit" onClick={closeMenu}>关于门店</a>
           </nav>
           <button className="button" type="button" onClick={() => openBooking()}>
@@ -290,6 +344,74 @@ export function PetCarePage() {
                 </li>
               ))}
             </ol>
+          </div>
+        </section>
+
+        <section className="reviews-section" id="reviews">
+          <div className="wrap">
+            <div className="reviews-heading">
+              <div>
+                <div className="kicker">HAPPY PAWS, HAPPY WORDS</div>
+                <h2>听听毛孩子家长怎么说。</h2>
+              </div>
+              <div className="review-summary" aria-label="客户综合评分 5 分">
+                <strong>5.0</strong>
+                <div><span className="stars" aria-hidden="true">★★★★★</span><small>近期到店家长评价</small></div>
+              </div>
+            </div>
+
+            <div
+              className="reviews-carousel"
+              aria-roledescription="轮播"
+              aria-label="客户评价"
+              onMouseEnter={() => setReviewsPaused(true)}
+              onMouseLeave={() => setReviewsPaused(false)}
+              onFocus={() => setReviewsPaused(true)}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) setReviewsPaused(false);
+              }}
+            >
+              <div className="reviews-viewport" aria-live="polite">
+                <div className="reviews-grid" key={`${reviewPage}-${reviewsPerPage}`}>
+                  {Array.from(
+                    { length: reviewsPerPage },
+                    (_, index) => reviews[(reviewPage * reviewsPerPage + index) % reviews.length],
+                  ).map((review) => (
+                      <article className="review-card" key={`${review.name}-${review.pet}`}>
+                        <div className="review-card-top">
+                          <span className="stars" aria-label="5 分，共 5 分">★★★★★</span>
+                          <span className="review-date">{review.date}</span>
+                        </div>
+                        <blockquote>“{review.quote}”</blockquote>
+                        <div className="reviewer">
+                          <span className="review-avatar" aria-hidden="true">{review.pet.slice(0, 1)}</span>
+                          <div><strong>{review.name}</strong><small>{review.pet} · {review.service}</small></div>
+                        </div>
+                      </article>
+                    ))}
+                </div>
+              </div>
+
+              <div className="carousel-controls">
+                <div className="carousel-buttons">
+                  <button type="button" onClick={() => moveReviews(-1)} aria-label="上一组评价" title="上一组评价">←</button>
+                  <button type="button" onClick={() => moveReviews(1)} aria-label="下一组评价" title="下一组评价">→</button>
+                </div>
+                <div className="carousel-dots" role="group" aria-label="选择评价页">
+                  {Array.from({ length: reviewPageCount }, (_, index) => (
+                    <button
+                      type="button"
+                      key={index}
+                      className={index === reviewPage ? "active" : ""}
+                      aria-label={`第 ${index + 1} 页评价`}
+                      aria-current={index === reviewPage ? "true" : undefined}
+                      onClick={() => setReviewPage(index)}
+                    />
+                  ))}
+                </div>
+                <span className="carousel-count"><b>{String(reviewPage + 1).padStart(2, "0")}</b> / {String(reviewPageCount).padStart(2, "0")}</span>
+              </div>
+            </div>
           </div>
         </section>
 
