@@ -90,9 +90,23 @@ h2{font-size:32px;letter-spacing:1px;margin:8px 0 0;line-height:1.4}
 .step-number{width:39px;height:39px;display:grid;place-items:center;background:var(--green);color:#fff;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:1px;box-shadow:0 8px 18px #344c3d20}
 .step h3{font-size:17px;line-height:1.5;margin:23px 0 8px}
 .step p{font-size:14px;line-height:1.75;color:var(--muted)}
-.visit{padding-top:0;display:flex;justify-content:space-between;align-items:center;gap:35px}
-.visit p{color:var(--muted);font-size:14px;margin-top:12px}
-.visit .button{white-space:nowrap}
+.visit-section{padding-top:0;padding-bottom:82px}
+.visit-heading{display:flex;justify-content:space-between;align-items:end;gap:35px;margin-bottom:28px}
+.visit-heading>p{max-width:420px;color:var(--muted);font-size:14px;text-align:right}
+.store-info{display:grid;grid-template-columns:1.35fr 1fr 1fr auto;align-items:center;gap:0;background:#fff;border:1px solid #dfe2d8;border-radius:22px;padding:22px;box-shadow:0 16px 45px #344c3d0a}
+.store-name,.info-item{display:flex;align-items:center;gap:15px;min-width:0;padding:4px 24px;border-right:1px solid var(--line)}
+.store-name{padding-left:4px}
+.store-mark{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;background:var(--orange);color:#fff;border-radius:16px;font-size:23px;font-weight:900;transform:rotate(-5deg)}
+.info-icon{width:37px;height:37px;flex:0 0 37px;display:grid;place-items:center;border-radius:12px;background:#edf2eb;color:var(--green);font-size:21px}
+.info-label{display:block;color:var(--orange);font-size:11px;font-weight:700;letter-spacing:1.5px;margin-bottom:3px}
+.store-info strong,.map-bar strong{display:block;font-size:15px;line-height:1.45}
+.store-info p{color:var(--muted);font-size:12px;line-height:1.55;margin-top:3px}
+.store-booking{white-space:nowrap;margin-left:22px}
+.map-panel{overflow:hidden;margin-top:18px;background:#fff;border:1px solid #dfe2d8;border-radius:22px;box-shadow:0 16px 45px #344c3d0a}
+.map-bar{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 22px;border-bottom:1px solid var(--line)}
+.map-status{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;white-space:nowrap}
+.map-status:before{content:"";width:8px;height:8px;border-radius:50%;background:#d7a84b}
+.store-map{display:block;width:100%;height:480px;border:0;background:#e7e5dc}
 footer{border-top:1px solid var(--line);padding:25px 0}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px;gap:20px}
 .footer-brand{font-size:16px;color:var(--ink);font-weight:700}
@@ -128,6 +142,12 @@ dialog::backdrop{background:#18231999;backdrop-filter:blur(4px)}
   .step:nth-child(3),.step:nth-child(4){border-bottom:0}
   .round-seal{right:-10px}
   .quality{gap:8px}
+  .store-info{grid-template-columns:1fr 1fr}
+  .store-name,.info-item{min-height:88px;padding:8px 18px}
+  .store-name{border-bottom:1px solid var(--line)}
+  .info-item:nth-of-type(2){border-right:0;border-bottom:1px solid var(--line)}
+  .info-item:nth-of-type(3){border-right:1px solid var(--line)}
+  .store-booking{margin:0 18px}
 }
 
 @media(max-width:720px){
@@ -172,7 +192,17 @@ dialog::backdrop{background:#18231999;backdrop-filter:blur(4px)}
   .step:last-child{border-bottom:0}
   .step h3{margin:0 0 5px;font-size:16px}
   .step p{font-size:13px}
-  .visit{align-items:flex-start;flex-direction:column;gap:20px}
+  .visit-section{padding-bottom:56px}
+  .visit-heading{align-items:flex-start;flex-direction:column;gap:12px;margin-bottom:20px}
+  .visit-heading>p{text-align:left}
+  .store-info{grid-template-columns:1fr;padding:8px 17px 18px}
+  .store-name,.info-item{min-height:0;padding:17px 0;border-right:0;border-bottom:1px solid var(--line)}
+  .info-item:nth-of-type(2),.info-item:nth-of-type(3){border-right:0;border-bottom:1px solid var(--line)}
+  .store-booking{width:100%;margin:18px 0 0}
+  .map-panel{margin-top:14px;border-radius:18px}
+  .map-bar{min-height:72px;padding:14px 17px}
+  .map-status{display:none}
+  .store-map{height:390px}
   .footer-inner{flex-direction:column;align-items:flex-start;gap:9px}
   .form-row{grid-template-columns:1fr}
   .hero-actions{gap:10px}
